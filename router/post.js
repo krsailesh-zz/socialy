@@ -53,7 +53,7 @@ router.put('/like', requireLogin, (req, res) => {
     }, {
         new: true
     })
-        .populate("postedBy",["_id","name"])
+        .populate("postedBy",["_id","name","profilepic"])
         .populate("comments.commentedBy",["_id","name"])
         .then(doc => {
             res.json(doc)
@@ -67,7 +67,7 @@ router.put('/unlike', requireLogin, (req, res) => {
     }, {
         new: true
     })
-        .populate("postedBy",["_id","name"])
+        .populate("postedBy",["_id","name","profilepic"])
         .populate("comments.commentedBy",["_id","name"])
         .then(doc => {
             res.json(doc)
@@ -83,7 +83,7 @@ router.put('/comment', requireLogin, (req, res) => {
     }, {
         new: true
     })
-        .populate('postedBy', ['_id', 'name'])
+        .populate('postedBy', ['_id', 'name',"profilepic"])
         .populate("comments.commentedBy", ['_id', 'name'])
         .then(doc => {
             res.json(doc)
