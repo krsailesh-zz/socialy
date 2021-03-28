@@ -5,15 +5,14 @@ const bcryptjs = require('bcryptjs')
 const { JWT_SECRET, GMAIL_USER, GMAIL_APP_PASS } = require('../config/keys')
 const jwt = require('jsonwebtoken')
 const nodemailer = require('nodemailer')
-const smtpTransport = require('nodemailer-smtp-transport')
 
-const transporter = nodemailer.createTransport(smtpTransport({
+const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: GMAIL_USER,
         pass: GMAIL_APP_PASS
     }
-}))
+})
 
 router.post('/signup', (req, res) => {
     const { name, email, password, profilepic } = req.body
