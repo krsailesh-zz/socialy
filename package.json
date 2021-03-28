@@ -17,6 +17,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.18",
     "nodemailer": "^6.5.0",
+    "nodemailer-smtp-transport": "^2.7.4",
     "sendmail": "^1.6.1"
   },
   "devDependencies": {

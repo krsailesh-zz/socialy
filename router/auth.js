@@ -5,8 +5,9 @@ const bcryptjs = require('bcryptjs')
 const { JWT_SECRET, GMAIL_USER, GMAIL_APP_PASS } = require('../config/keys')
 const jwt = require('jsonwebtoken')
 const nodemailer = require('nodemailer')
+const smtpTransport = require('nodemailer-smtp-transport')
 
-const transporter = nodemailer.createTransport({
+const transporter = nodemailer.createTransport(smtpTransport({
     service: 'Gmail',
     host: 'socialy2001.herokuapp.com',
     port: 587,
@@ -14,7 +15,7 @@ const transporter = nodemailer.createTransport({
         user: GMAIL_USER,
         pass: GMAIL_APP_PASS
     }
-})
+}))
 
 router.post('/signup', (req, res) => {
     const { name, email, password, profilepic } = req.body
@@ -45,10 +46,8 @@ router.post('/signup', (req, res) => {
                                 subject: 'signed up successfully on socialy',
                                 html: '<h2>Welcome to socialy</h2>'
                             })
-                                .then(res => {
-                                    res.json(res)
-                                })
-                                .catch(err => console.log(err))
+                            .catch(err => console.log(err))
+                            res.json(user)
                         })
                         .catch(err => console.log(err))
                 })
