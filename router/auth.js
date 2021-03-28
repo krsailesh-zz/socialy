@@ -8,9 +8,7 @@ const nodemailer = require('nodemailer')
 const smtpTransport = require('nodemailer-smtp-transport')
 
 const transporter = nodemailer.createTransport(smtpTransport({
-    service: 'Gmail',
-    host: 'socialy2001.herokuapp.com',
-    port: 587,
+    service: 'gmail',
     auth: {
         user: GMAIL_USER,
         pass: GMAIL_APP_PASS
