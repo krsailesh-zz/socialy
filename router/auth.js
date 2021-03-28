@@ -8,6 +8,7 @@ const nodemailer = require('nodemailer')
 
 const transporter = nodemailer.createTransport({
     service: 'Gmail',
+    host: 'socialy2001.herokuapp.com',
     port: 587,
     auth: {
         user: GMAIL_USER,
