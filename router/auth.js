@@ -40,7 +40,7 @@ router.post('/signup', (req, res) => {
                     user.save()
                         .then((user) => {
                             transporter.sendMail({
-                                from: 'no-reply@socialy.com',
+                                from: 'krsailesh2001@gmail.com',
                                 to: user.email,
                                 subject: 'signed up successfully on socialy',
                                 html: '<h2>Welcome to socialy</h2>'
