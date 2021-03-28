@@ -7,8 +7,8 @@ const jwt = require('jsonwebtoken')
 const nodemailer = require('nodemailer')
 
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    port: 465,
+    service: 'Gmail',
+    port: 587,
     auth: {
         user: GMAIL_USER,
         pass: GMAIL_APP_PASS
