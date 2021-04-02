@@ -4,74 +4,84 @@ const requireLogin = require('../middleware/requireLogin')
 const postModel = require('../models/post')
 const userModel = require('../models/user')
 
-router.get('/user/:id', requireLogin, (req,res) => {
-    userModel.findOne({_id:req.params.id})
-    .select('-password')
-    .then(user => {
-        postModel.find({postedBy:user._id})
-        .populate("postedBy",["_id","name"])
-        .then(posts => {
-            res.json({user,posts})
-        })
-        .catch(err => console.log(err))
-    })
-    .catch(err => console.log(err))
-})
-
-router.put('/follow/:id', requireLogin, (req,res) => {
-    userModel.findByIdAndUpdate(req.params.id,{
-        $push: {followers: req.user._id}
-    },{
-        new: true
-    })
-    .select('-password')
-    .then(followedUser => {
-        userModel.findByIdAndUpdate(req.user._id,{
-            $push: {following: req.params.id}
-        },{
-            new: true
-        })
+router.get('/user/:id', requireLogin, (req, res) => {
+    userModel.findOne({ _id: req.params.id })
         .select('-password')
-        .then(followingUser => {
-            res.json({followedUser,followingUser})
+        .then(user => {
+            postModel.find({ postedBy: user._id })
+                .populate("postedBy", ["_id", "name"])
+                .then(posts => {
+                    res.json({ user, posts })
+                })
+                .catch(err => console.log(err))
         })
         .catch(err => console.log(err))
-    })
-    .catch(err => console.log(err))
 })
 
-router.put('/unfollow/:id', requireLogin, (req,res) => {
-    userModel.findByIdAndUpdate(req.params.id,{
-        $pull: {followers: req.user._id}
-    },{
+router.put('/follow/:id', requireLogin, (req, res) => {
+    userModel.findByIdAndUpdate(req.params.id, {
+        $push: { followers: req.user._id }
+    }, {
         new: true
     })
-    .select('-password')
-    .then(followedUser => {
-        userModel.findByIdAndUpdate(req.user._id,{
-            $pull: {following: req.params.id}
-        },{
-            new: true
-        })
         .select('-password')
-        .then(followingUser => {
-            res.json({followedUser,followingUser})
+        .then(followedUser => {
+            userModel.findByIdAndUpdate(req.user._id, {
+                $push: { following: req.params.id }
+            }, {
+                new: true
+            })
+                .select('-password')
+                .then(followingUser => {
+                    res.json({ followedUser, followingUser })
+                })
+                .catch(err => console.log(err))
         })
         .catch(err => console.log(err))
-    })
-    .catch(err => console.log(err))
 })
 
-router.put('/updateprofilepic', requireLogin, (req,res) => {
-    userModel.findByIdAndUpdate(req.user._id,{
-        $set: {'profilepic': req.body.url}
-    },{
+router.put('/unfollow/:id', requireLogin, (req, res) => {
+    userModel.findByIdAndUpdate(req.params.id, {
+        $pull: { followers: req.user._id }
+    }, {
         new: true
     })
-    .then(doc => {
-        res.json(doc)
+        .select('-password')
+        .then(followedUser => {
+            userModel.findByIdAndUpdate(req.user._id, {
+                $pull: { following: req.params.id }
+            }, {
+                new: true
+            })
+                .select('-password')
+                .then(followingUser => {
+                    res.json({ followedUser, followingUser })
+                })
+                .catch(err => console.log(err))
+        })
+        .catch(err => console.log(err))
+})
+
+router.put('/updateprofilepic', requireLogin, (req, res) => {
+    userModel.findByIdAndUpdate(req.user._id, {
+        $set: { 'profilepic': req.body.url }
+    }, {
+        new: true
     })
-    .catch(err => console.log(err))
+        .then(doc => {
+            res.json(doc)
+        })
+        .catch(err => console.log(err))
+})
+
+router.post('/search-users', (req, res) => {
+    let regPattern = new RegExp('^' + req.body.query)
+    userModel.find({ email: { $regex: regPattern } })
+        .select('_id email name')
+        .then((users) => {
+            res.json(users)
+        })
+        .catch(err => console.log(err))
 })
 
 module.exports = router

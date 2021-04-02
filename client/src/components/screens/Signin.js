@@ -57,6 +57,7 @@ const Signin = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
+                <Link to="/resetpass" style={{float:'right'}}>forgot password?</Link>
                 <br/>
                 <br/>
                 <button className="btn waves-effect waves-light blue darken-1" onClick={()=>signinData()}>Signin</button>

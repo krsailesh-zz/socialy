@@ -7,25 +7,29 @@ import Signin from './components/screens/Signin'
 import Profile from './components/screens/Profile'
 import CreatePost from './components/screens/CreatePost'
 import UserProfile from './components/screens/UserProfile'
+import ForgotPasslink from './components/screens/ForgotPasslink'
+import ForgotPassword from './components/screens/ForgotPassword'
 import SubuserPosts from './components/screens/SubuserPosts'
 import './App.css'
-import {reducer, initialState} from './reducers/userReducers'
+import { reducer, initialState } from './reducers/userReducers'
 
 export const UserContext = createContext()
 
 const Routing = () => {
   const history = useHistory()
-  const {state,dispatch} = useContext(UserContext)
+  const { state, dispatch } = useContext(UserContext)
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"))
-    if(user){
-      dispatch({type:"USER", payload:user})
+    if (user) {
+      dispatch({ type: "USER", payload: user })
     }
-    else{
-      history.push('/signin')
+    else {
+      if (!history.location.pathname.startsWith('/resetpass')) {
+        history.push('/signin')
+      }
     }
-  },[])
-  
+  }, [])
+
   return (
     <Switch>
       <Route exact path='/'>
@@ -49,6 +53,12 @@ const Routing = () => {
       {/* <Route path='/followinguserposts'>
         <SubuserPosts />
       </Route> */}
+      <Route exact path='/resetpass'>
+        <ForgotPasslink />
+      </Route>
+      <Route path='/resetpass/:token'>
+        <ForgotPassword />
+      </Route>
     </Switch>
   )
 }
@@ -56,7 +66,7 @@ const Routing = () => {
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState)
   return (
-    <UserContext.Provider value={{state,dispatch}}>
+    <UserContext.Provider value={{ state, dispatch }}>
       <BrowserRouter>
         <Navbar />
         <Routing />

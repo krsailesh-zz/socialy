@@ -103,3 +103,7 @@ a {
 .upload-button {
     font-size: 2em;
 }
+
+.collection-item{
+    width: 100%;
+}
