@@ -28,7 +28,7 @@ Tech used in this project :
 
 ### Clone
 
-- Clone this repo to your local machine using `https://github.com/krsailesh2001/socialy.git`
+- Clone this repo to your local machine using `https://github.com/krsailesh/socialy.git`
 
 ### Setup
 
